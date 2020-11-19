@@ -22,7 +22,7 @@ print('formula4:', formula4)
 print('formula5:', formula5)
 print('formula6:', formula6)
 print('formula7:', formula7)
-print('formula8:', formula8)
+#print('formula8:', formula8)
 
 print('length of formula1:', length(formula1))
 print('length of formula3:', length(formula3))
