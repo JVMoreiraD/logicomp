@@ -3,7 +3,7 @@
 
 from formula import *
 from functions import *
-
+from semantics import *
 
 formula1 = Atom('p')
 formula2 = Atom('q')
@@ -47,9 +47,15 @@ print('===================================\n')
 # for example, for formula8:
 #print('number of subformulas of formula8:', len(subformulas(formula8)))
 #print('len(subformulas(formula8)) <= length(formula8):', len(subformulas(formula8)) <= length(formula8))
-formula_test = Implies(And(Atom('p'), Not(Atom('q'))), Atom('r'))
+#ormula_test = Implies(And(Atom('p'), Not(Atom('q'))), Atom('r'))
 #old_formula = Not(Atom('q'))
 #new_formula = Or(Atom('r'), Atom('t'))
 
-#print(substitution(formula_test,o,n))
+#print(substitution(formula_test,old_formula,new_formula))
+formula9 = Or(Atom('p'), Atom('q'))
+valor = {Atom('p'): False, Atom('q'): True }
+atomslist = ('p','q')
+teste = is_satisfiable(formula9)
+
+print(teste)
 
