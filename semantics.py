@@ -87,21 +87,33 @@ def is_satisfiable(formula):
     Otherwise, it returns False."""
     pass
     # ======== YOUR CODE HERE ========
-#    list_atoms = atoms(formula)
-#    interpretation = None
-#    return sat(formula,list_atoms,interpretation)
+    atoms_list = atoms(formula)
+    interpretation = {}
+    return sat(formula,atoms_list,interpretation)
 
-#def sat(formula,atoms_list,interpretation):
-#    if len(atoms_list) == 0:
-#        if truth_value(formula,interpretation):
-#            return interpretation
-#        else:
-#            return False
-#    atom_list = atoms_list.pop()
-#    interpretation1 = {interpretation}.union(atom_list,True)
-#    interpretation2 = {interpretation}.union(atom_list,False)
-#    result = sat(formula,atoms_list,interpretation1) or sat(formula,atoms_list,interpretation2)
-#    if result!= False:
-#       return result
-#    return sat(formula,atoms_list,interpretation2)
+
+def union_dict(interpretation1: dict, interpretation2: dict):
+    
+    return {**interpretation1,**interpretation2}
+
+
+def sat(formula,atoms_list,interpretation):
+    
+    if len(atoms_list) == 0:
+        if truth_value(formula,interpretation):
+            return interpretation
+
+        return False
+    
+    atom_ = atoms_list.pop()
+    
+    interpretation1 = union_dict(interpretation, {atom_: True})
+    interpretation2 = union_dict(interpretation, {atom_: False})
+
+    result = sat(formula,atoms_list.copy(),interpretation1)
+    
+    if result:
+        return result
+    
+    return sat(formula,atoms_list.copy(),interpretation2)
 

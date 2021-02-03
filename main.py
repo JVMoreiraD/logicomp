@@ -12,7 +12,7 @@ formula4 = And(Atom('p'), Atom('s'))
 formula5 = Not(And(Atom('p'), Atom('s')))
 formula6 = Or(Not(And(Atom('p'), Atom('s'))), Atom('q'))
 formula7 = Implies(Not(And(Atom('p'), Atom('s'))), And(Atom('q'), Atom('r')))
-formula8 = Implies(Not(And(Atom('p'), Atom('s'))), And(Atom('q'), Not(And(Atom('p'), Atom('s')))))
+formula8 = Implies((And(Atom('p'), Atom('s'))), And(Atom('q'), Not(And(Atom('p'), Atom('s')))))
 
 
 #print('formula1:', formula1)
@@ -52,10 +52,10 @@ print('===================================\n')
 #new_formula = Or(Atom('r'), Atom('t'))
 
 #print(substitution(formula_test,old_formula,new_formula))
-formula9 = Or(Atom('p'), Atom('q'))
-valor = {Atom('p'): False, Atom('q'): True }
-atomslist = ('p','q')
-teste = is_satisfiable(formula9)
-
-print(teste)
-
+#print(is_satisfiable(formula1))
+x = is_satisfiable(formula8)
+print(formula8)
+for key,value in x.items():
+    print("key: ", key )
+    print("value: ", value )
+print(x)
