@@ -74,10 +74,12 @@ def mines_neighborhood(grid):
                 premises = premises + at_most_one(i, j)
             if grid[i][j] == 2:
                 pass
-                # ======== YOUR CODE HERE ========
+                premises = premises + at_least_two(i, j)
+                premises = premises + at_most_two(i, j)
             if grid[i][j] == 3:
                 pass
-                # ======== YOUR CODE HERE ========
+                premises = premises + at_least_three(i, j)
+                premises = premises + at_most_three(i, j)
 
     return premises
 
@@ -113,17 +115,99 @@ def at_least_one(i, j):  # -> List[Formula]
     return [final_formula]
 
 
+# at most twoo mine is adjacent to (i, j):
+
+def at_most_two(i, j):
+    neighbors = get_adjacent_cells(i, j)
+    neighbors.remove((i, j))
+    neighbors.sort()
+    formulas = []
+    for neighbor1 in neighbors:
+        for neighbor2 in neighbors:
+            for neighbor3 in neighbors:
+                if neighbor1 < neighbor2 < neighbor3:
+                    formulas = formulas + [ Not(  And( And(Atom( str(neighbor1[0]) + '_' + str(neighbor1[1])),
+                                                       Atom( str(neighbor2[0]) + '_' + str(neighbor2[1]))),
+                                                       Atom( str(neighbor3[0]) + '_' + str(neighbor3[1])) ))]
+    return formulas
+
+
+# at least two mine is adjacent to (i, j):
+
+def at_least_two(i, j):
+    neighbors = get_adjacent_cells(i, j)
+    neighbors.remove((i, j))
+    neighbors.sort()
+    atoms = []
+    for neighbor1 in neighbors:
+        for neighbor2 in neighbors:
+            if neighbor1 < neighbor2:
+                atoms.append(And(Atom(str(neighbor1[0]) + '_' + str(neighbor1[1])),
+                                    Atom(str(neighbor2[0]) + '_' + str(neighbor2[1]))))
+    final_formula = atoms[0]
+    for atom in atoms:
+        if atom != atoms[0]:
+            final_formula = Or(atom, final_formula)
+    return [final_formula]
+
+
+# at most three mine is adjacent to (i, j):
+
+def at_most_three(i, j):
+    neighbors = get_adjacent_cells(i, j)
+    neighbors.remove((i, j))
+    neighbors.sort()
+    formulas = []
+    for neighbor1 in neighbors:
+        for neighbor2 in neighbors:
+            for neighbor3 in neighbors:
+                for neighbor4 in neighbors:
+                    if neighbor1 < neighbor2 < neighbor3 < neighbor4:
+                        formulas = formulas + [ Not(  And( And( And( Atom( str(neighbor1[0]) + '_' + str(neighbor1[1])),
+                                                                     Atom( str(neighbor2[0]) + '_' + str(neighbor2[1])) ),
+                                                                     Atom( str(neighbor3[0]) + '_' + str(neighbor3[1])) ),
+                                                                     Atom( str(neighbor4[0]) + '_' + str(neighbor4[1])) ))]
+    return formulas
+
+
+# at least three mine is adjacent to (i, j):
+
+def at_least_three(i, j):
+    neighbors = get_adjacent_cells(i, j)
+    neighbors.remove((i, j))
+    neighbors.sort()
+    atoms = []
+    for neighbor1 in neighbors:
+        for neighbor2 in neighbors:
+            for neighbor3 in neighbors:
+                if neighbor1 < neighbor2 < neighbor3:
+                    atoms.append( And( And( Atom(str(neighbor1[0]) + '_' + str(neighbor1[1])),
+                                            Atom(str(neighbor2[0]) + '_' + str(neighbor2[1])) ),
+                                            Atom(str(neighbor3[0]) + '_' + str(neighbor3[1])) ))
+    final_formula = atoms[0]
+    for atom in atoms:
+        if atom != atoms[0]:
+            final_formula = Or(atom, final_formula)
+    return [final_formula]
+
 def get_adjacent_cells(i, j):
     adjacent_cells = [(i + k, j + m) for k in [-1, 0, 1] for m in [-1, 0, 1] if 0 <= i + k <= 3 and 0 <= j + m <= 3]
     return adjacent_cells
 
+def returns(grid):
+    return at_least_three(3, 2)
 
+
+for n in returns(my_grid):
+    print(n)
+
+'''
 # print(get_adjacent_cells(0, 0))
 print('premises in no_mines(my_grid): ')
 for premise in no_mines(my_grid):
     print(premise)
 
-print('premises in mines_neighborhood(my_grid) ')
+print('premises in mines_neighborhood(my_grid): ')
 for premise in mines_neighborhood(my_grid):
     print(premise)
 
@@ -137,3 +221,4 @@ print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), No
 print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Atom('3_0')))
 print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Not(Atom('3_0'))))
 # ======== YOUR CODE HERE ========
+'''
