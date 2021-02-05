@@ -160,9 +160,13 @@ def at_most_three(i, j):
     formulas = []
     for neighbor1 in neighbors:
         for neighbor2 in neighbors:
-            if neighbor1 < neighbor2:
-                formulas = formulas + [Not(And(Atom(str(neighbor1[0]) + '_' + str(neighbor1[1])),
-                                               Atom(str(neighbor2[0]) + '_' + str(neighbor2[1]))))]
+            for neighbor3 in neighbors:
+                for neighbor4 in neighbors:
+                    if neighbor1 < neighbor2 < neighbor3 < neighbor4:
+                        formulas = formulas + [ Not(  And( And( And( Atom( str(neighbor1[0]) + '_' + str(neighbor1[1])),
+                                                                     Atom( str(neighbor2[0]) + '_' + str(neighbor2[1])) ),
+                                                                     Atom( str(neighbor3[0]) + '_' + str(neighbor3[1])) ),
+                                                                     Atom( str(neighbor4[0]) + '_' + str(neighbor4[1])) ))]
     return formulas
 
 
@@ -172,20 +176,26 @@ def at_least_three(i, j):
     neighbors = get_adjacent_cells(i, j)
     neighbors.remove((i, j))
     neighbors.sort()
-    formulas = []
+    atoms = []
     for neighbor1 in neighbors:
         for neighbor2 in neighbors:
-            if neighbor1 < neighbor2:
-                formulas = formulas + [Not(And(Atom(str(neighbor1[0]) + '_' + str(neighbor1[1])),
-                                               Atom(str(neighbor2[0]) + '_' + str(neighbor2[1]))))]
-    return formulas
+            for neighbor3 in neighbors:
+                if neighbor1 < neighbor2 < neighbor3:
+                    atoms.append( And( And( Atom(str(neighbor1[0]) + '_' + str(neighbor1[1])),
+                                            Atom(str(neighbor2[0]) + '_' + str(neighbor2[1])) ),
+                                            Atom(str(neighbor3[0]) + '_' + str(neighbor3[1])) ))
+    final_formula = atoms[0]
+    for atom in atoms:
+        if atom != atoms[0]:
+            final_formula = Or(atom, final_formula)
+    return [final_formula]
 
 def get_adjacent_cells(i, j):
     adjacent_cells = [(i + k, j + m) for k in [-1, 0, 1] for m in [-1, 0, 1] if 0 <= i + k <= 3 and 0 <= j + m <= 3]
     return adjacent_cells
 
 def returns(grid):
-    return at_least_one(3, 2)[0]
+    return at_least_three(3, 2)
 
 
 for n in returns(my_grid):
