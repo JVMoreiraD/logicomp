@@ -12,10 +12,14 @@ def truth_value(formula, interpretation):
     pass
     # ======== YOUR CODE HERE ========
     if isinstance(formula, Not):
-        if isinstance(formula.inner, Atom):
-            return not formula.innner
-        else:
-            return not truth_value(formula.inner, interpretation)
+        
+        # if truth_value(formula.inner, interpretation) is None:
+        #     return None
+        
+        # else:
+        #     return not truth_value(formula.inner, interpretation)
+        
+        return None if truth_value(formula.inner, interpretation) is None else (not truth_value(formula.inner,interpretation))
     
     if isinstance(formula, Atom):
         for i in interpretation:
@@ -30,28 +34,30 @@ def truth_value(formula, interpretation):
         right = truth_value(formula.right, interpretation)
 
         
-        if left is None:
-            return None
+        # if left is None:
+        #     return None
         
-        if left is True and right is False:
-            return False
+        # if left is True and right is False:
+        #     return False
         
-        else:
-            return True
-
+        # else:
+        #     return True
+        return None if left is None else False if left is True and right is False else True
     
     if isinstance(formula, And):
         left = truth_value(formula.left, interpretation)
 
         right = truth_value(formula.right, interpretation)
 
-        if left is None or right is None:
-            return None
+        # if left is None or right is None:
+        #     return None
 
-        if (left and right):
-            return True
+        # if (left and right):
+        #     return True
         
-        return False
+        # return False
+
+        return None if (left is None or right is None) else True if (left and right) else False
 
     if isinstance(formula, Or):
 
@@ -63,11 +69,21 @@ def truth_value(formula, interpretation):
     
         
 
-def is_logical_consequence(premises, conclusion):  # function TT-Entails? in the book AIMA.
+def is_logical_consequence(premises: list, conclusion):  # function TT-Entails? in the book AIMA.
     """Returns True if the conclusion is a logical consequence of the set of premises. Otherwise, it returns False."""
+    "premisias = [A1......Ak], "
     pass
     # ======== YOUR CODE HERE ========
-
+    # temp = False
+    # for i in range(len(premises)):
+    #     temp2 = And((premises[i]), Not(conclusion))
+    #     if is_satisfiable(temp2) is False:
+    #         temp = True
+    # return temp
+    # if is_satisfiable(And(premises, Not(conclusion))):
+    #     return True
+    # return False
+    return True if is_satisfiable(And(premises,Not(conclusion))) else False
 
 def is_logical_equivalence(formula1, formula2):
     """Checks whether formula1 and formula2 are logically equivalent."""
@@ -80,6 +96,12 @@ def is_valid(formula):
     pass
     # ======== YOUR CODE HERE ========
 
+    # if  is_satisfiable(Not(formula)) is False:
+    #     return True
+    # else:
+    #     return False
+
+    return True if is_satisfiable(Not(formula)) is False else False
 
 def is_satisfiable(formula):
     """Checks whether formula is satisfiable.
