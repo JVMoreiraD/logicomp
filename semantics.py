@@ -74,16 +74,20 @@ def is_logical_consequence(premises: list, conclusion):  # function TT-Entails? 
     "premisias = [A1......Ak], "
     pass
     # ======== YOUR CODE HERE ========
-    # temp = False
-    # for i in range(len(premises)):
-    #     temp2 = And((premises[i]), Not(conclusion))
-    #     if is_satisfiable(temp2) is False:
-    #         temp = True
-    # return temp
-    # if is_satisfiable(And(premises, Not(conclusion))):
-    #     return True
-    # return False
-    return True if is_satisfiable(And(premises,Not(conclusion))) else False
+
+    return False if is_satisfiable(And(join_formula_and(premises),Not(conclusion))) else True
+
+
+
+def join_formula_and(formulas_list: list):
+    
+    # if len(formulasL) == 1:
+    #     return formulasL[0]
+    # else:
+    #     formula = formulasL.pop()
+    #     return And(formula, joinformula(formulasL.copy()))
+    
+    return formulas_list[0] if len(formulas_list) == 1 else And(formulas_list.pop(), join_formula_and(formulas_list.copy()))
 
 def is_logical_equivalence(formula1, formula2):
     """Checks whether formula1 and formula2 are logically equivalent."""
