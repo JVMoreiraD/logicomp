@@ -40,11 +40,24 @@ my_grid = [[-1, -1, -1, -1],
            [-1, -1, -1, -1],
            [-1, 1, 1, 1],
            [-1, 1, 0, 0]]
+
+
+Exemplo de entrada:
+5 5
+[-1, -1, -1, 1,0]
+[-1, -1, -1, 1,0]
+[1, 3, -1, 2, 0]
+[0, 1, 1, 1, 0]      
 """
 
 my_grid = [[-1, -1, -1, -1],
            [-1, -1, -1, -1],
-           [-1, 1, 1, 1],
+           [-1,  1,  1,  1],
+           [-1,  1,  0,  0]]
+
+my_grid2 = [[0,0, 2, -1],
+           [0, 1, -1, -1],
+           [1, 2, 2, 2],
            [-1, 1, 0, 0]]
 
 
@@ -82,7 +95,6 @@ def mines_neighborhood(grid):
                 premises = premises + at_most_three(i, j)
 
     return premises
-
 
 # at most one mine is adjacent to (i, j):
 
@@ -190,35 +202,35 @@ def at_least_three(i, j):
             final_formula = Or(atom, final_formula)
     return [final_formula]
 
+
 def get_adjacent_cells(i, j):
     adjacent_cells = [(i + k, j + m) for k in [-1, 0, 1] for m in [-1, 0, 1] if 0 <= i + k <= 3 and 0 <= j + m <= 3]
     return adjacent_cells
 
-def returns(grid):
-    return at_least_three(3, 2)
 
+#return a array with needed atoms
+def atomicas(grid):
+    atomicas = []
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            atomicas += [(Atom(str(i) + '_' + str(j)))]
+    return atomicas
 
-for n in returns(my_grid):
-    print(n)
+#return mine positions
+def theres_mines(grid):
+    premisias = no_mines(grid) + mines_neighborhood(grid)
+    atomicas_ = atomicas(grid)
+    
 
-'''
-# print(get_adjacent_cells(0, 0))
-print('premises in no_mines(my_grid): ')
-for premise in no_mines(my_grid):
-    print(premise)
+    for i in range(len(atomicas_)):
+        if is_logical_consequence(premisias, atomicas_[i]):
+            print('With the given inputs we can say that theres a mine in {}'.format(atomicas_[i]))
 
-print('premises in mines_neighborhood(my_grid): ')
-for premise in mines_neighborhood(my_grid):
-    print(premise)
-
-
-print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Atom('1_2')))
-print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Not(Atom('1_2'))))
-print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Atom('1_3')))
-print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Not(Atom('1_3'))))
-print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Atom('2_0')))
-print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Not(Atom('2_0'))))
-print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Atom('3_0')))
-print(is_logical_consequence(no_mines(my_grid) + mines_neighborhood(my_grid), Not(Atom('3_0'))))
-# ======== YOUR CODE HERE ========
-'''
+#return all positions of where theres no mines present
+def theres_no_mines(grid):
+    premisias = no_mines(grid) + mines_neighborhood(grid)
+    atomicas_ = atomicas(grid)
+    
+    for i in range(len(atomicas_)):
+        if is_logical_consequence(premisias, Not(atomicas_[i])):
+            print('With the given input we can say that theres no mine in {}\n'.format(atomicas_[i]))
