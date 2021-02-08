@@ -58,9 +58,9 @@ my_grid_2 = [[  0,  0,  1, -1],
              [ -1,  2,  1,  1],
              [ -1,  2,  0,  0]]
 
-my_grid_3 = [[  0,  1,  3, -1],
-             [  0,  1, -1, -1],
-             [  0,  1,  2,  2],
+my_grid_3 = [[  0,  1,  -1, -1],
+             [  0,  2,  -1, -1],
+             [  0,  2,  -1,  3],
              [  0,  0,  0,  0]]
 
 
@@ -250,4 +250,5 @@ def informations_of_grid(grid):
     print('\n''And we can say that there are no mines in:\n')
     print(theres_no_mines(grid))
 
-print(informations_of_grid(my_grid_2))
+
+print(informations_of_grid(my_grid_3))
