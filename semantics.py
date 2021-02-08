@@ -10,14 +10,8 @@ def truth_value(formula, interpretation):
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
     pass
-    # ======== YOUR CODE HERE ========
+
     if isinstance(formula, Not):
-        
-        # if truth_value(formula.inner, interpretation) is None:
-        #     return None
-        
-        # else:
-        #     return not truth_value(formula.inner, interpretation)
         
         return None if truth_value(formula.inner, interpretation) is None else (not truth_value(formula.inner,interpretation))
     
@@ -26,36 +20,20 @@ def truth_value(formula, interpretation):
             if formula.__eq__(i):
                 return interpretation[i]
         return None
-    
+
     if isinstance(formula, Implies):
         
         left = truth_value(formula.left, interpretation)
         
         right = truth_value(formula.right, interpretation)
 
-        
-        # if left is None:
-        #     return None
-        
-        # if left is True and right is False:
-        #     return False
-        
-        # else:
-        #     return True
         return None if left is None else False if left is True and right is False else True
     
     if isinstance(formula, And):
+        
         left = truth_value(formula.left, interpretation)
 
         right = truth_value(formula.right, interpretation)
-
-        # if left is None or right is None:
-        #     return None
-
-        # if (left and right):
-        #     return True
-        
-        # return False
 
         return None if (left is None or right is None) else True if (left and right) else False
 
@@ -69,23 +47,17 @@ def truth_value(formula, interpretation):
     
         
 
-def is_logical_consequence(premises: list, conclusion):  # function TT-Entails? in the book AIMA.
-    """Returns True if the conclusion is a logical consequence of the set of premises. Otherwise, it returns False."""
-    "premisias = [A1......Ak], "
-    pass
+def is_logical_consequence(premises: list, conclusion):
+    
     # ======== YOUR CODE HERE ========
+
+    pass
 
     return False if is_satisfiable(And(join_formula_and(premises),Not(conclusion))) else True
 
 
 
 def join_formula_and(formulas_list: list):
-    
-    # if len(formulasL) == 1:
-    #     return formulasL[0]
-    # else:
-    #     formula = formulasL.pop()
-    #     return And(formula, joinformula(formulasL.copy()))
     
     return formulas_list[0] if len(formulas_list) == 1 else And(formulas_list.pop(), join_formula_and(formulas_list.copy()))
 
@@ -100,11 +72,6 @@ def is_valid(formula):
     pass
     # ======== YOUR CODE HERE ========
 
-    # if  is_satisfiable(Not(formula)) is False:
-    #     return True
-    # else:
-    #     return False
-
     return True if is_satisfiable(Not(formula)) is False else False
 
 def is_satisfiable(formula):
@@ -113,23 +80,26 @@ def is_satisfiable(formula):
     Otherwise, it returns False."""
     pass
     # ======== YOUR CODE HERE ========
-    atoms_list = atoms(formula)
-    interpretation = {}
-    return sat(formula,atoms_list,interpretation)
-
-
-def union_dict(interpretation1: dict, interpretation2: dict):
     
-    return {**interpretation1,**interpretation2}
+    atoms_list = atoms(formula)
+    partial_interpretation_ = partial_interpretation(formula)
+    
+    if partial_interpretation_:
+        atoms_list = remove_atoms(atoms_list.copy(), partial_interpretation_)
+        return sat(formula, atoms_list, partial_interpretation_)
+    
+    else:
+        return sat(formula, atoms_list, {})
 
 
 def sat(formula,atoms_list,interpretation):
     
     if len(atoms_list) == 0:
-        if truth_value(formula,interpretation):
-            return interpretation
+        
+        result = truth_value(formula,interpretation)
+        
+        return interpretation if result else False
 
-        return False
     
     atom_ = atoms_list.pop()
     
@@ -143,3 +113,34 @@ def sat(formula,atoms_list,interpretation):
     
     return sat(formula,atoms_list.copy(),interpretation2)
 
+def partial_interpretation(formula):
+    if isinstance(formula, Atom):
+        
+        return{formula: True}
+    
+    if isinstance(formula, Not):
+        if isinstance(formula.inner, Atom):
+            
+            return {formula.inner: False}
+    
+    if isinstance(formula, And):
+        
+        left = partial_interpretation(formula.left)
+        right = partial_interpretation(formula.right)
+
+        if (left and right):
+            return union_dict(left,right)
+    
+    return None
+
+def remove_atoms(formula, interpretation):
+    atoms_list = []
+    for atom in atoms_list:
+        if atom not in interpretation:
+            atoms_list.append(atom)
+    return atoms_list
+    
+
+def union_dict(interpretation1: dict, interpretation2: dict):
+    
+    return {**interpretation1,**interpretation2}
