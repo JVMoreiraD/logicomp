@@ -4,7 +4,7 @@ Trabalho para a cadeira de logica para computação
 
 Alunos: João Vitor Moreira Duarte & Paulo Henrique Tavares Bulcão
 
-#Premisia do Projeto
+# Premisia do Projeto
 
 Campo Minado é um jogo em que o objetivo é limpar uma grade sem detonar nenhuma mina.
 O jogador é apresentado inicialmente com uma grade de quadrados indiferenciados.
