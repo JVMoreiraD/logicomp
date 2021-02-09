@@ -49,8 +49,6 @@ def truth_value(formula, interpretation):
 
 def is_logical_consequence(premises: list, conclusion):
     
-    # ======== YOUR CODE HERE ========
-
     pass
 
     return False if is_satisfiable(And(join_formula_and(premises),Not(conclusion))) else True
@@ -64,13 +62,11 @@ def join_formula_and(formulas_list: list):
 def is_logical_equivalence(formula1, formula2):
     """Checks whether formula1 and formula2 are logically equivalent."""
     pass
-    # ======== YOUR CODE HERE ========
 
 
 def is_valid(formula):
     """Returns True if formula is a logically valid (tautology). Otherwise, it returns False"""
     pass
-    # ======== YOUR CODE HERE ========
 
     return True if is_satisfiable(Not(formula)) is False else False
 
@@ -79,7 +75,6 @@ def is_satisfiable(formula):
     In other words, if the input formula is satisfiable, it returns an interpretation that assigns true to the formula.
     Otherwise, it returns False."""
     pass
-    # ======== YOUR CODE HERE ========
     
     atoms_list = atoms(formula)
     partial_interpretation_ = partial_interpretation(formula)

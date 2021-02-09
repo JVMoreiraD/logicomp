@@ -42,7 +42,19 @@ No código, a entrada pode ser representada da seguinte forma:
 grid = [[ -1, -1, -1, -1],
         [ -1, -1, -1, -1],
         [ -1,  1,  1,  1],
-        [ -1,  1,  0,  0]]     
+        [ -1,  1,  0,  0]]   
+
+Entradas adicionadas para testes no projeto:
+
+my_grid_2 = [[  0,  0,  1, -1],
+             [  1,  1,  1, -1],
+             [ -1,  2,  1,  1],
+             [ -1,  2,  0,  0]]
+
+my_grid_3 = [[  0,  1,  -1, -1],
+             [  0,  2,  -1, -1],
+             [  0,  2,  -1,  3],
+             [  0,  0,  0,  0]]
 
 '''
 
@@ -251,4 +263,6 @@ def informations_of_grid(grid):
     print(theres_no_mines(grid))
 
 
+print(informations_of_grid(my_grid_1))
+print(informations_of_grid(my_grid_2))
 print(informations_of_grid(my_grid_3))
